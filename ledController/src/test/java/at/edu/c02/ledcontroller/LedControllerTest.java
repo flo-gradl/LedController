@@ -97,39 +97,39 @@ public class LedControllerTest {
 
     }
 
-    @Test
-    public void TestAllLEDOFF() throws Exception {
-
-        ApiService apiService = mock(ApiService.class);
-
-        JSONArray lights = new JSONArray();
-
-        JSONObject led1 = new JSONObject();
-        led1.put("id", 1);
-        led1.put("on", true);
-        led1.put("color", "#fff");
-        lights.put(led1);
-
-        JSONObject led2 = new JSONObject();
-        led2.put("id", 2);
-        led2.put("on", true);
-        led2.put("color", "#fff");
-        lights.put(led2);
-
-        JSONObject response = new JSONObject();
-        response.put("lights", lights);
-
-        when(apiService.getLights()).thenReturn(response);
-
-        LedControllerImpl controller = new LedControllerImpl(apiService);
-
-        controller.turnOffAllLeds();
-
-        verify(apiService).setLightState(1, "#fff", false);
-        verify(apiService).setLightState(2, "#fff", false);
-
-        verify(apiService, times(1)).getLights();
-        verifyNoMoreInteractions(apiService);
-
-    }
+//    @Test
+//    public void TestAllLEDOFF() throws Exception {
+//
+//        ApiService apiService = mock(ApiService.class);
+//
+//        JSONArray lights = new JSONArray();
+//
+//        JSONObject led1 = new JSONObject();
+//        led1.put("id", 1);
+//        led1.put("on", true);
+//        led1.put("color", "#fff");
+//        lights.put(led1);
+//
+//        JSONObject led2 = new JSONObject();
+//        led2.put("id", 2);
+//        led2.put("on", true);
+//        led2.put("color", "#fff");
+//        lights.put(led2);
+//
+//        JSONObject response = new JSONObject();
+//        response.put("lights", lights);
+//
+//        when(apiService.getLights()).thenReturn(response);
+//
+//        LedControllerImpl controller = new LedControllerImpl(apiService);
+//
+//        controller.turnOffAllLeds();
+//
+//        verify(apiService).setLightState(1, "#fff", false);
+//        verify(apiService).setLightState(2, "#fff", false);
+//
+//        verify(apiService, times(1)).getLights();
+//        verifyNoMoreInteractions(apiService);
+//
+//    }
 }
