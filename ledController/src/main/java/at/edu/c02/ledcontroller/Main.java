@@ -19,9 +19,10 @@ public class Main {
             System.out.println("Enter 'demo' to send a demo request");
             System.out.println("Enter 'exit' to exit the program");
             input = reader.readLine();
-            if(input.equalsIgnoreCase("demo"))
-            {
+            if(input.equalsIgnoreCase("demo")) {
                 ledController.demo();
+            } else if (input.equalsIgnoreCase("groupstatus")) {
+                ledController.getGroupLeds("B");
             }
         }
     }
