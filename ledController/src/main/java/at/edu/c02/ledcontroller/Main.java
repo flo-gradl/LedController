@@ -25,6 +25,7 @@ public class Main {
             System.out.println("Enter 'groupstatus' to get the status of all LEDs of one specific group");
             System.out.println("Enter 'status' to get the status of one specific LED");
             System.out.println("Enter 'setLed' to set a specific LED color");
+            System.out.println("Enter 'off' to turn off all LEDs");
             System.out.println("Enter 'spinningled' to set a spinning LED profile");
             input = reader.readLine();
             if(input.equalsIgnoreCase("demo")) {
@@ -62,7 +63,16 @@ public class Main {
 
                 JSONObject obj = arr.getJSONObject(0);
 
-                System.out.println("LED " + obj.get("id") + "is on: " + obj.get("on") + ". Color: " + obj.get("color"));
+                System.out.println("LED " + obj.get("id") + " is on: " + obj.get("on")
+                        + ". Color: " + obj.get("color"));
+
+            } else if (input.equalsIgnoreCase("off")) {
+                try {
+                    ledController.turnOffAllLeds();
+                    System.out.println("✅ All LEDs turned off.");
+                } catch (IOException e) {
+                    System.out.println("❌ Error turning off LEDs: " + e.getMessage());
+                }
             }
 
             else if (input.equalsIgnoreCase("spinningled")) {
