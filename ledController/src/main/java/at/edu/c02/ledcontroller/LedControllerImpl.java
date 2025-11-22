@@ -11,10 +11,14 @@ import java.io.IOException;
 public class LedControllerImpl implements LedController {
     private final ApiService apiService;
 
+// static ids if loop doesnt work
+// private static final int[] GROUP_LED_IDS = { 10, 11, 12 };
+
     public LedControllerImpl(ApiService apiService)
     {
         this.apiService = apiService;
     }
+
 
     @Override
     public void demo() throws IOException
@@ -53,4 +57,21 @@ public class LedControllerImpl implements LedController {
         return groupLeds;
 
     }
+
+    @Override
+    public void turnOffAllLeds() throws IOException {
+        JSONObject response = apiService.getLights();
+        JSONArray lights = response.getJSONArray("lights");
+
+        for (int i = 0; i < lights.length(); i++) {
+            JSONObject light = lights.getJSONObject(i);
+            int id = light.getInt("id");
+
+            // current color or default "#000000"
+            String color = light.getString("color");
+
+            apiService.setLightState(id, color, false);
+        }
+    }
+
 }
