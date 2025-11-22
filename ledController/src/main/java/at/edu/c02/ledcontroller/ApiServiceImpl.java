@@ -35,6 +35,11 @@ public class ApiServiceImpl implements ApiService {
         return SendGetRequest("/getLights?id"+ ID);
     }
 
+    @Override
+    public void setLightState(int id, String color, boolean state) throws IOException {
+
+    }
+
     private JSONObject SendGetRequest(String query) throws IOException
     {
         // Connect to the server

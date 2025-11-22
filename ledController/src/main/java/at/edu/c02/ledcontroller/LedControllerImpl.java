@@ -67,7 +67,7 @@ public class LedControllerImpl implements LedController {
             JSONObject light = lights.getJSONObject(i);
             int id = light.getInt("id");
 
-            // current color or default "#000000"
+            // current color
             String color = light.getString("color");
 
             apiService.setLightState(id, color, false);
