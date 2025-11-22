@@ -25,6 +25,7 @@ public class Main {
             System.out.println("Enter 'groupstatus' to get the status of all LEDs of one specific group");
             System.out.println("Enter 'status' to get the status of one specific LED");
             System.out.println("Enter 'setLed' to set a specific LED color");
+            System.out.println("Enter 'spinningled' to set a spinning LED profile");
             input = reader.readLine();
             if(input.equalsIgnoreCase("demo")) {
                 ledController.demo();
@@ -63,6 +64,20 @@ public class Main {
 
                 System.out.println("LED " + obj.get("id") + "is on: " + obj.get("on") + ". Color: " + obj.get("color"));
             }
+
+            else if (input.equalsIgnoreCase("spinningled")) {
+                    System.out.println("Which color?");
+                    String color = reader.readLine().trim();
+
+                    System.out.println("How many turns?");
+                    String nrofturn = reader.readLine();
+                    int nrofTurns = Integer.parseInt(nrofturn.trim());
+
+                    for(int i = 0; i < nrofTurns; i++) {
+                        ledController.lauflicht(color);
+                       ledController.turnOffAllLeds();
+                    }
+            }
         }
-    }
-}
+    }}
+
