@@ -106,5 +106,8 @@ public class LedControllerImpl implements LedController {
             }
             prevId = id;
         }
+        if (prevId != 0) {
+            apiService.setLight(prevId, "black", false);
+        }
     }
 }
