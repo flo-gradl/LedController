@@ -90,10 +90,13 @@ public class LedControllerImpl implements LedController {
     public void lauflicht(String color) throws IOException {
 
         JSONArray groupLeds = getGroupLeds("B");
-
+        int prevId = 0;
         for (int i = 0; i < groupLeds.length(); i++) {
             JSONObject obj = groupLeds.getJSONObject(i);
             int id = obj.getInt("id");
+            if(prevId != 0){
+                apiService.setLight(prevId,"black",false);
+            }
             apiService.setLight(id,color,true);
             try {
                 Thread.sleep(1000);
@@ -101,6 +104,7 @@ public class LedControllerImpl implements LedController {
                 Thread.currentThread().interrupt();
                 break; // sauber abbrechen
             }
+            prevId = id;
         }
     }
 }
