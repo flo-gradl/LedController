@@ -8,6 +8,7 @@ import java.io.IOException;
 /**
  * This class handles the actual logic
  */
+
 public class LedControllerImpl implements LedController {
     private final ApiService apiService;
 
@@ -64,8 +65,8 @@ public class LedControllerImpl implements LedController {
     }
 
     @Override
-    public JSONObject setLight(int id, String color, boolean state) throws IOException {
-        return apiService.setLight(id, color, state);
+    public void setLight(int id, String color, boolean state) throws IOException {
+        apiService.setLight(id, color, state);
     }
 
     @Override
