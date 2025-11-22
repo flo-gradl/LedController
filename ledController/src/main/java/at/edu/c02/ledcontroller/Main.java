@@ -1,5 +1,6 @@
 package at.edu.c02.ledcontroller;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,12 +21,11 @@ public class Main {
         while(!input.equalsIgnoreCase("exit"))
         {
             System.out.println("=== LED Controller ===");
-            System.out.println("Enter 'demo'       → send a demo request");
-            System.out.println("Enter 'setled'     → set a specific LED color");
-            System.out.println("Enter 'groupstatus'→ show status of group B");
-            System.out.println("Enter 'status'     → show status of a specific LED");
-            System.out.println("Enter 'off'        → turn **all LEDs off**");
-            System.out.println("Enter 'exit'       → exit the program");
+            System.out.println("Enter 'demo' to send a demo request");
+            System.out.println("Enter 'exit' to exit the program");
+            System.out.println("Enter 'groupstatus' to get the status of all LEDs of one specific group");
+            System.out.println("Enter 'status' to get the status of one specific LED");
+            System.out.println("Enter 'setLed' to set a specific LED color");
             input = reader.readLine();
 
             if(input.equalsIgnoreCase("demo")) {
@@ -55,7 +55,17 @@ public class Main {
             } else if (input.equalsIgnoreCase("status")) {
                 System.out.println("Please specify LED ID:");
                 input = reader.readLine();
-                JSONObject obj = api.getLight(Integer.parseInt(input));
+
+                JSONObject response = api.getLight(Integer.parseInt(input));
+                JSONArray arr = response.getJSONArray("lights");
+
+                if (arr.length() == 0) {
+                    System.out.println("No LED found with that ID.");
+                    continue;
+                }
+
+                JSONObject obj = arr.getJSONObject(0);
+
                 System.out.println("LED " + obj.get("id") + " is on: " + obj.get("on")
                         + ". Color: " + obj.get("color"));
 

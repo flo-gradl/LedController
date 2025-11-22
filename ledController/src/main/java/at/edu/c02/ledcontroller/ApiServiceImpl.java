@@ -38,7 +38,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public JSONObject getLight(int ID) throws IOException
     {
-        return SendGetRequest("/getLights?id" + ID);
+        return SendGetRequest("/lights/" + String.valueOf(ID));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class ApiServiceImpl implements ApiService {
 
     public static String readSecret() throws IOException {
         //String path = "..secret.txt";  // relativer Pfad
-        return Files.readString(Paths.get("..", "secret.txt")).trim();
+        return Files.readString(Paths.get(".", "secret.txt")).trim();
     }
 
 
