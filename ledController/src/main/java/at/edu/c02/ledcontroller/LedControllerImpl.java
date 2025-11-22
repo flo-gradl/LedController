@@ -20,10 +20,15 @@ public class LedControllerImpl implements LedController {
     }
 
     @Override
-    public void demo() throws IOException {
+    public void demo() throws IOException
+    {
+        // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
         JSONObject response = apiService.getLights();
+        // get the "lights" array from the response
         JSONArray lights = response.getJSONArray("lights");
+        // read the first json object of the lights array
         JSONObject firstLight = lights.getJSONObject(0);
+        // read int and string properties of the light
         System.out.println("First light id is: " + firstLight.getInt("id"));
         System.out.println("First light color is: " + firstLight.getString("color"));
     }
@@ -39,7 +44,9 @@ public class LedControllerImpl implements LedController {
             JSONObject led = lights.getJSONObject(i);
 
             if (led.has("groupByGroup") && !led.isNull("groupByGroup")) {
+
                 JSONObject groupInfo = led.getJSONObject("groupByGroup");
+
                 if (groupInfo.has("name") && group.equals(groupInfo.getString("name"))) {
                     groupLeds.put(led);
                 }
@@ -48,14 +55,11 @@ public class LedControllerImpl implements LedController {
 
         for (int i = 0; i < groupLeds.length(); i++) {
             JSONObject obj = groupLeds.getJSONObject(i);
-            System.out.println(
-                    "LED " + obj.get("id") +
-                            " is on: " + obj.get("on") +
-                            ". Color: " + obj.get("color") + "."
-            );
+            System.out.println("LED " + obj.get("id") + "is on: " + obj.get("on") + ". Color: " + obj.get("color") + ".");
         }
 
         return groupLeds;
+
     }
 
     @Override
@@ -80,21 +84,29 @@ public class LedControllerImpl implements LedController {
         }
     }
 
+
     @Override
     public void lauflicht(String color) throws IOException {
-        JSONArray groupLeds = getGroupLeds("B");
 
+        JSONArray groupLeds = getGroupLeds("B");
+        int prevId = 0;
         for (int i = 0; i < groupLeds.length(); i++) {
             JSONObject obj = groupLeds.getJSONObject(i);
             int id = obj.getInt("id");
-            apiService.setLight(id, color, true);
-
+            if(prevId != 0){
+                apiService.setLight(prevId,"black",false);
+            }
+            apiService.setLight(id,color,true);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                break; // sauber abbrechen
             }
+            prevId = id;
+        }
+        if (prevId != 0) {
+            apiService.setLight(prevId, "black", false);
         }
     }
 }

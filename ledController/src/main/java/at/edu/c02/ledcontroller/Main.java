@@ -9,8 +9,7 @@ import java.io.InputStreamReader;
 
 public class Main {
     /**
-     * This is the main program entry point.
-     * TODO: add new commands when implementing additional features.
+     * This is the main program entry point. TODO: add new commands when implementing additional features.
      */
     public static void main(String[] args) throws IOException {
         ApiServiceImpl api = new ApiServiceImpl();
@@ -27,14 +26,12 @@ public class Main {
             System.out.println("Enter 'status' to get the status of one specific LED");
             System.out.println("Enter 'setLed' to set a specific LED color");
             System.out.println("Enter 'off' to turn off all LEDs");
-
+            System.out.println("Enter 'spinningled' to set a spinning LED profile");
             input = reader.readLine();
-
-            if (input.equalsIgnoreCase("demo")) {
+            if(input.equalsIgnoreCase("demo")) {
                 ledController.demo();
-
-            } else if (input.equalsIgnoreCase("setled")) {
-                try {
+            } else if(input.equalsIgnoreCase("setled")){
+                try{
                     System.out.println("Which LED (ID)?");
                     String idLed = reader.readLine();
                     int ledId = Integer.parseInt(idLed.trim());
@@ -45,15 +42,13 @@ public class Main {
                     ledController.setLight(ledId, color, true);
 
                     System.out.println("LED color set!");
-                } catch (NumberFormatException e) {
+                }catch(NumberFormatException e){
                     System.out.println("Invalid LED ID");
-                } catch (IOException e) {
+                }catch (IOException e){
                     System.out.println("Error: " + e.getMessage());
                 }
-
             } else if (input.equalsIgnoreCase("groupstatus")) {
                 ledController.getGroupLeds("B");
-
             } else if (input.equalsIgnoreCase("status")) {
                 System.out.println("Please specify LED ID:");
                 input = reader.readLine();
@@ -79,6 +74,20 @@ public class Main {
                     System.out.println("❌ Error turning off LEDs: " + e.getMessage());
                 }
             }
+
+            else if (input.equalsIgnoreCase("spinningled")) {
+                    System.out.println("Which color?");
+                    String color = reader.readLine().trim();
+
+                    System.out.println("How many turns?");
+                    String nrofturn = reader.readLine();
+                    int nrofTurns = Integer.parseInt(nrofturn.trim());
+
+                    for(int i = 0; i < nrofTurns; i++) {
+                        ledController.lauflicht(color);
+                       ledController.turnOffAllLeds();
+                    }
+            }
         }
-    }
-}
+    }}
+

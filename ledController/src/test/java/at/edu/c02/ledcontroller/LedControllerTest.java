@@ -107,11 +107,13 @@ public class LedControllerTest {
         JSONObject led1 = new JSONObject();
         led1.put("id", 1);
         led1.put("on", true);
+        led1.put("color", "#fff");
         lights.put(led1);
 
         JSONObject led2 = new JSONObject();
         led2.put("id", 2);
         led2.put("on", true);
+        led2.put("color", "#fff");
         lights.put(led2);
 
         JSONObject response = new JSONObject();
@@ -123,12 +125,11 @@ public class LedControllerTest {
 
         controller.turnOffAllLeds();
 
-        verify(apiService).setLight(1, false);
-        verify(apiService).setLight(2, false);
+        verify(apiService).setLightState(1, "#fff", false);
+        verify(apiService).setLightState(2, "#fff", false);
 
         verify(apiService, times(1)).getLights();
         verifyNoMoreInteractions(apiService);
-
 
     }
 }
