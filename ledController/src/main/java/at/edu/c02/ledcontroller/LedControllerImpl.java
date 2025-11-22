@@ -54,8 +54,18 @@ public class LedControllerImpl implements LedController {
             }
         }
 
+        for (int i = 0; i < groupLeds.length(); i++) {
+            JSONObject obj = groupLeds.getJSONObject(i);
+            System.out.println("LED " + obj.get("id") + "is on: " + obj.get("on") + ". Color: " + obj.get("color") + ".");
+        }
+
         return groupLeds;
 
+    }
+
+    @Override
+    public JSONObject setLight(int id, String color, boolean state) throws IOException {
+        return apiService.setLight(id, color, state);
     }
 
     @Override

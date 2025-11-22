@@ -11,4 +11,6 @@ public interface ApiService {
 
     void setLightState(int id, String color, boolean state) throws IOException;
     //JSONArray getGroupLeds(String groupName) throws IOException;
+
+    JSONObject setLight(int id, String color, boolean on) throws IOException;
 }

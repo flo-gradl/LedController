@@ -11,4 +11,5 @@ public interface LedController {
 
     void turnOffAllLeds() throws IOException;
 
+    JSONObject setLight(int id, String color, boolean state) throws IOException;
 }
