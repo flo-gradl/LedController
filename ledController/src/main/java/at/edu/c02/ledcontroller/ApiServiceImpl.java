@@ -36,6 +36,28 @@ public class ApiServiceImpl implements ApiService {
         return SendGetRequest("/getLights?id"+ ID);
     }
 
+    @Override
+    public void setLightState(int id, String color, boolean state) throws IOException {
+        URL url = new URL("https://balanced-civet-91.hasura.app/api/rest/setLight");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("PUT");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("X-Hasura-Group-ID", "Todo");
+        connection.setDoOutput(true);
+
+        JSONObject body = new JSONObject();
+        body.put("id", id);
+        body.put("color", "#000000"); // dummy if required
+        body.put("state", state);
+
+        connection.getOutputStream().write(body.toString().getBytes());
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            throw new IOException("Error: setLight request failed with code " + responseCode);
+        }
+    }
+
     private JSONObject SendGetRequest(String query) throws IOException
     {
         // Connect to the server
