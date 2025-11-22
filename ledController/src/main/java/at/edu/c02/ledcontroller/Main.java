@@ -85,9 +85,10 @@ public class Main {
 
                     for(int i = 0; i < nrofTurns; i++) {
                         ledController.lauflicht(color);
-                       ledController.turnOffAllLeds();
+                       //ledController.turnOffAllLeds();
                     }
             }
         }
-    }}
+    }
+}
 
