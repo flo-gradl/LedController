@@ -12,25 +12,18 @@ import java.io.IOException;
 public class LedControllerImpl implements LedController {
     private final ApiService apiService;
 
-// static ids if loop doesnt work
-// private static final int[] GROUP_LED_IDS = { 10, 11, 12 };
+    // Fixed group IDs we are allowed to control
+    private static final int[] GROUP_LED_IDS = { 20, 21, 22, 23, 24, 25, 26, 27 };
 
-    public LedControllerImpl(ApiService apiService)
-    {
+    public LedControllerImpl(ApiService apiService) {
         this.apiService = apiService;
     }
 
-
     @Override
-    public void demo() throws IOException
-    {
-        // Call `getLights`, the response is a json object in the form `{ "lights": [ { ... }, { ... } ] }`
+    public void demo() throws IOException {
         JSONObject response = apiService.getLights();
-        // get the "lights" array from the response
         JSONArray lights = response.getJSONArray("lights");
-        // read the first json object of the lights array
         JSONObject firstLight = lights.getJSONObject(0);
-        // read int and string properties of the light
         System.out.println("First light id is: " + firstLight.getInt("id"));
         System.out.println("First light color is: " + firstLight.getString("color"));
     }
@@ -46,9 +39,7 @@ public class LedControllerImpl implements LedController {
             JSONObject led = lights.getJSONObject(i);
 
             if (led.has("groupByGroup") && !led.isNull("groupByGroup")) {
-
                 JSONObject groupInfo = led.getJSONObject("groupByGroup");
-
                 if (groupInfo.has("name") && group.equals(groupInfo.getString("name"))) {
                     groupLeds.put(led);
                 }
@@ -61,7 +52,6 @@ public class LedControllerImpl implements LedController {
         }
 
         return groupLeds;
-
     }
 
     @Override
@@ -84,5 +74,4 @@ public class LedControllerImpl implements LedController {
             apiService.setLightState(id, color, false);
         }
     }
-
 }
