@@ -8,13 +8,18 @@ import java.io.IOException;
 /**
  * This class handles the actual logic
  */
+
 public class LedControllerImpl implements LedController {
     private final ApiService apiService;
+
+// static ids if loop doesnt work
+// private static final int[] GROUP_LED_IDS = { 10, 11, 12 };
 
     public LedControllerImpl(ApiService apiService)
     {
         this.apiService = apiService;
     }
+
 
     @Override
     public void demo() throws IOException
@@ -60,9 +65,26 @@ public class LedControllerImpl implements LedController {
     }
 
     @Override
-    public JSONObject setLight(int id, String color, boolean state) throws IOException {
-        return apiService.setLight(id, color, state);
+    public void setLight(int id, String color, boolean state) throws IOException {
+        apiService.setLight(id, color, state);
     }
+
+    @Override
+    public void turnOffAllLeds() throws IOException {
+        JSONObject response = apiService.getLights();
+        JSONArray lights = response.getJSONArray("lights");
+
+        for (int i = 0; i < lights.length(); i++) {
+            JSONObject light = lights.getJSONObject(i);
+            int id = light.getInt("id");
+
+            // current color
+            String color = light.getString("color");
+
+            apiService.setLightState(id, color, false);
+        }
+    }
+
 
     @Override
     public void lauflicht(String color) throws IOException {
