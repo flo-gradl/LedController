@@ -96,4 +96,39 @@ public class LedControllerTest {
         verify(apiService, times(1)).getLights();
 
     }
+
+    @Test
+    public void TestAllLEDOFF() throws Exception {
+
+        ApiService apiService = mock(ApiService.class);
+
+        JSONArray lights = new JSONArray();
+
+        JSONObject led1 = new JSONObject();
+        led1.put("id", 1);
+        led1.put("on", true);
+        lights.put(led1);
+
+        JSONObject led2 = new JSONObject();
+        led2.put("id", 2);
+        led2.put("on", true);
+        lights.put(led2);
+
+        JSONObject response = new JSONObject();
+        response.put("lights", lights);
+
+        when(apiService.getLights()).thenReturn(response);
+
+        LedControllerImpl controller = new LedControllerImpl(apiService);
+
+        controller.turnOffAllLeds();
+
+        verify(apiService).setLight(1, false);
+        verify(apiService).setLight(2, false);
+
+        verify(apiService, times(1)).getLights();
+        verifyNoMoreInteractions(apiService);
+
+
+    }
 }
