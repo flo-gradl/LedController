@@ -26,13 +26,15 @@ public class Main {
             System.out.println("Enter 'groupstatus' to get the status of all LEDs of one specific group");
             System.out.println("Enter 'status' to get the status of one specific LED");
             System.out.println("Enter 'setLed' to set a specific LED color");
+            System.out.println("Enter 'off' to turn off all LEDs");
+
             input = reader.readLine();
 
-            if(input.equalsIgnoreCase("demo")) {
+            if (input.equalsIgnoreCase("demo")) {
                 ledController.demo();
 
-            } else if(input.equalsIgnoreCase("setled")){
-                try{
+            } else if (input.equalsIgnoreCase("setled")) {
+                try {
                     System.out.println("Which LED (ID)?");
                     String idLed = reader.readLine();
                     int ledId = Integer.parseInt(idLed.trim());
@@ -43,9 +45,9 @@ public class Main {
                     ledController.setLight(ledId, color, true);
 
                     System.out.println("LED color set!");
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     System.out.println("Invalid LED ID");
-                }catch (IOException e){
+                } catch (IOException e) {
                     System.out.println("Error: " + e.getMessage());
                 }
 

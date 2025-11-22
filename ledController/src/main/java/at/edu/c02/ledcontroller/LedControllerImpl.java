@@ -4,16 +4,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * This class handles the actual logic
  */
-
 public class LedControllerImpl implements LedController {
     private final ApiService apiService;
 
     // Fixed group IDs we are allowed to control
-    private static final int[] GROUP_LED_IDS = { 20, 21, 22, 23, 24, 25, 26, 27 };
+    private static final int[] GROUP_LED_IDS = {20, 21, 22, 23, 24, 25, 26, 27};
 
     public LedControllerImpl(ApiService apiService) {
         this.apiService = apiService;
@@ -48,7 +48,11 @@ public class LedControllerImpl implements LedController {
 
         for (int i = 0; i < groupLeds.length(); i++) {
             JSONObject obj = groupLeds.getJSONObject(i);
-            System.out.println("LED " + obj.get("id") + "is on: " + obj.get("on") + ". Color: " + obj.get("color") + ".");
+            System.out.println(
+                    "LED " + obj.get("id") +
+                            " is on: " + obj.get("on") +
+                            ". Color: " + obj.get("color") + "."
+            );
         }
 
         return groupLeds;
@@ -61,6 +65,7 @@ public class LedControllerImpl implements LedController {
 
     @Override
     public void turnOffAllLeds() throws IOException {
+        // Get current state of all LEDs
         JSONObject response = apiService.getLights();
         JSONArray lights = response.getJSONArray("lights");
 
@@ -68,27 +73,27 @@ public class LedControllerImpl implements LedController {
             JSONObject light = lights.getJSONObject(i);
             int id = light.getInt("id");
 
-            // current color
-            String color = light.getString("color");
-
-            apiService.setLightState(id, color, false);
+            if (Arrays.stream(GROUP_LED_IDS).anyMatch(allowedId -> allowedId == id)) {
+                String color = light.getString("color");
+                apiService.setLight(id, color, false);
+            }
         }
     }
 
     @Override
     public void lauflicht(String color) throws IOException {
-
         JSONArray groupLeds = getGroupLeds("B");
 
         for (int i = 0; i < groupLeds.length(); i++) {
             JSONObject obj = groupLeds.getJSONObject(i);
             int id = obj.getInt("id");
-            apiService.setLight(id,color,true);
+            apiService.setLight(id, color, true);
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break; // sauber abbrechen
+                break;
             }
         }
     }
