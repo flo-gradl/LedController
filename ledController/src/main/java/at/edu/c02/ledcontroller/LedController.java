@@ -12,4 +12,5 @@ public interface LedController {
     void turnOffAllLeds() throws IOException;
 
     void setLight(int id, String color, boolean state) throws IOException;
+    void lauflicht(String color) throws IOException;
 }

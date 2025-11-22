@@ -38,7 +38,7 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public JSONObject getLight(int ID) throws IOException
     {
-        return SendGetRequest("/getLights?id" + ID);
+        return SendGetRequest("/lights/" + String.valueOf(ID));
     }
 
     @Override
